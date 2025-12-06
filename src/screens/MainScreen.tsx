@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Modal, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { colors, fontSize, fontFamily, spacing, formatMoney } from '../theme/terminal';
+import { colors, fontSize, fontFamily, spacing, formatMoney, commonStyles } from '../theme/terminal';
 import { useGameStore } from '../store/gameStore';
 import { Header } from '../components/Header';
 import { Button } from '../components/Button';
@@ -34,7 +34,6 @@ export const MainScreen: React.FC<Props> = ({ navigation }) => {
     }
   }, [gameOver, navigation]);
 
-  const netWorth = useGameStore(s => s.netWorth());
   const weeklyExpenses = useGameStore(s => s.weeklyExpenses());
 
   // Quick stats
@@ -45,117 +44,100 @@ export const MainScreen: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       <Header />
 
-      <ScrollView style={styles.content}>
-        {/* Status Panel */}
-        <View style={styles.panel}>
-          <Text style={styles.panelTitle}>// STATUS</Text>
+      <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
+
+        {/* Active Operations Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>ACTIVE OPERATIONS</Text>
+
+          {/* Active Pump Card */}
+          {activePump && pumpStock ? (
+            <View style={[styles.card, styles.pumpCard]}>
+              <View style={styles.cardHeader}>
+                <Text style={styles.cardTitle}>PUMP IN PROGRESS</Text>
+                <Text style={styles.pumpDays}>DAY {activePump.daysActive + 1}/7</Text>
+              </View>
+              <Text style={styles.pumpStockName}>{pumpStock.name} ({pumpStock.key})</Text>
+              <View style={styles.pumpStats}>
+                <Text style={styles.pumpStat}>Price: {formatMoney(pumpStock.price)}</Text>
+                <Text style={styles.pumpStat}>Vol: {formatMoney(activePump.totalVolumePumped)}</Text>
+              </View>
+            </View>
+          ) : (
+            <View style={[styles.card, styles.emptyCard]}>
+              <Text style={styles.emptyText}>NO ACTIVE PUMPS</Text>
+              <Text style={styles.emptySubtext}>Start a pump in the Boiler Room</Text>
+            </View>
+          )}
+
+          {/* Weekly Expenses Warning */}
+          {day % 7 === 6 && weeklyExpenses > 0 && (
+            <View style={[styles.card, styles.warningCard]}>
+              <Text style={styles.warningTitle}>PAYMENT DUE TOMORROW</Text>
+              <Text style={styles.warningAmount}>{formatMoney(weeklyExpenses)}</Text>
+            </View>
+          )}
+        </View>
+
+        {/* Office Status Section */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>OFFICE STATUS</Text>
           <View style={styles.statusGrid}>
-            <View style={styles.statusItem}>
-              <Text style={styles.statusLabel}>Office</Text>
+            <View style={styles.statusCard}>
+              <Text style={styles.statusLabel}>OFFICE</Text>
               <Text style={styles.statusValue}>{officeLevel.toUpperCase()}</Text>
             </View>
-            <View style={styles.statusItem}>
-              <Text style={styles.statusLabel}>Callers</Text>
+            <View style={styles.statusCard}>
+              <Text style={styles.statusLabel}>STAFF</Text>
               <Text style={styles.statusValue}>{callers.length}</Text>
             </View>
-            <View style={styles.statusItem}>
-              <Text style={styles.statusLabel}>Marks</Text>
+            <View style={styles.statusCard}>
+              <Text style={styles.statusLabel}>MARKS</Text>
               <Text style={styles.statusValue}>{marks.length}</Text>
             </View>
-            <View style={styles.statusItem}>
-              <Text style={styles.statusLabel}>Trusting</Text>
+            <View style={styles.statusCard}>
+              <Text style={styles.statusLabel}>TRUSTING</Text>
               <Text style={styles.statusValue}>{trustingMarks}</Text>
             </View>
           </View>
         </View>
 
-        {/* Active Pump */}
-        {activePump && pumpStock && (
-          <View style={[styles.panel, styles.pumpPanel]}>
-            <Text style={styles.panelTitle}>// ACTIVE PUMP</Text>
-            <Text style={styles.pumpStock}>{pumpStock.name} ({pumpStock.key})</Text>
-            <Text style={styles.pumpInfo}>
-              Day {activePump.daysActive + 1}/7 | Price: {formatMoney(pumpStock.price)}
-            </Text>
-            <Text style={styles.pumpInfo}>
-              Peak: {formatMoney(activePump.peakPrice)} | Volume: {formatMoney(activePump.totalVolumePumped)}
-            </Text>
-          </View>
-        )}
-
-        {/* Weekly Expenses Warning */}
-        {day % 7 === 6 && weeklyExpenses > 0 && (
-          <View style={[styles.panel, styles.warningPanel]}>
-            <Text style={styles.warningText}>
-              WEEKLY EXPENSES DUE TOMORROW: {formatMoney(weeklyExpenses)}
-            </Text>
-          </View>
-        )}
-
-        {/* Tutorial Tips - show for first 7 days */}
-        {day <= 7 && (
-          <View style={[styles.panel, styles.tipPanel]}>
-            <Text style={styles.tipTitle}>// TIP - DAY {day}</Text>
-            <Text style={styles.tipText}>
-              {day === 1 && "Welcome to Wall Street. Start by TRADING - buy some penny stocks cheap."}
-              {day === 2 && "Visit BOILER ROOM to see your marks. Cold calls bring in new suckers daily."}
-              {day === 3 && "Marks need TRUST level 3+ before they'll buy penny stocks. First, sell them blue chips."}
-              {day === 4 && "When you have enough trusting marks, START A PUMP on a penny stock you own."}
-              {day === 5 && "Pumps last 7 days max. Sell YOUR shares before the hype dies and price crashes."}
-              {day === 6 && "HEAT attracts feds. Use PROTECTION to bribe cops or hire lawyers."}
-              {day === 7 && "Reach $10M net worth to escape. Stay under 100 heat or you're arrested."}
-            </Text>
-          </View>
-        )}
-
-        {/* Navigation Buttons */}
-        <View style={styles.navGrid}>
-          <Button
-            title="[ TRADE ]"
-            onPress={() => navigation.navigate('Trade')}
-            variant="secondary"
-            size="large"
-            style={styles.navButton}
-          />
-          <Button
-            title="[ BOILER ROOM ]"
-            onPress={() => navigation.navigate('Boiler')}
-            variant="secondary"
-            size="large"
-            style={styles.navButton}
-          />
-          <Button
-            title="[ PROTECTION ]"
-            onPress={() => navigation.navigate('Protection')}
-            variant="secondary"
-            size="large"
-            style={styles.navButton}
-          />
-        </View>
-
-        {/* Progress to Win */}
-        <View style={styles.panel}>
-          <Text style={styles.panelTitle}>// ESCAPE FUND</Text>
-          <View style={styles.progressBar}>
-            <View
-              style={[
-                styles.progressFill,
-                { width: `${Math.min(100, (netWorth / 10000000) * 100)}%` },
-              ]}
+        {/* Command Deck */}
+        <View style={styles.commandDeck}>
+          <Text style={styles.sectionTitle}>COMMAND DECK</Text>
+          <View style={styles.commandGrid}>
+            <Button
+              title="TRADE"
+              onPress={() => navigation.navigate('Trade')}
+              variant="primary"
+              size="large"
+              style={styles.commandButton}
+            />
+            <Button
+              title="BOILER ROOM"
+              onPress={() => navigation.navigate('Boiler')}
+              variant="primary"
+              size="large"
+              style={styles.commandButton}
+            />
+            <Button
+              title="PROTECTION"
+              onPress={() => navigation.navigate('Protection')}
+              variant="danger" // Distinct color for protection
+              size="large"
+              style={styles.commandButton}
             />
           </View>
-          <Text style={styles.progressText}>
-            {formatMoney(netWorth)} / $10M to escape
-          </Text>
         </View>
+
       </ScrollView>
 
-      {/* Next Day Button */}
+      {/* Footer / Next Day */}
       <View style={styles.footer}>
         <Button
-          title="[ NEXT DAY >>> ]"
+          title="END DAY >>"
           onPress={advanceDay}
-          variant="primary"
+          variant="secondary"
           size="large"
           style={styles.nextDayButton}
         />
@@ -172,7 +154,9 @@ export const MainScreen: React.FC<Props> = ({ navigation }) => {
           <View style={styles.modalContent}>
             {currentEvent && (
               <>
-                <Text style={styles.eventType}>// {currentEvent.type.toUpperCase()}</Text>
+                <View style={styles.modalHeader}>
+                  <Text style={styles.eventType}>{currentEvent.type}</Text>
+                </View>
                 <Text style={styles.eventTitle}>{currentEvent.title}</Text>
                 <Text style={styles.eventDescription}>{currentEvent.description}</Text>
 
@@ -191,7 +175,7 @@ export const MainScreen: React.FC<Props> = ({ navigation }) => {
                   </View>
                 ) : (
                   <Button
-                    title="[ OK ]"
+                    title="ACKNOWLEDGE"
                     onPress={dismissEvent}
                     variant="primary"
                     size="medium"
@@ -214,118 +198,141 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: spacing.md,
   },
-  panel: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.surface,
+  scrollContent: {
     padding: spacing.md,
-    marginBottom: spacing.md,
+    paddingBottom: 100, // Space for footer
   },
-  panelTitle: {
+  section: {
+    marginBottom: spacing.lg,
+  },
+  sectionTitle: {
     fontFamily: fontFamily.mono,
     fontSize: fontSize.sm,
     color: colors.textDim,
     marginBottom: spacing.sm,
+    letterSpacing: 1,
   },
-  statusGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-  },
-  statusItem: {
-    width: '50%',
+  card: {
+    ...commonStyles.box,
     marginBottom: spacing.sm,
   },
-  statusLabel: {
+  pumpCard: {
+    borderColor: colors.accent,
+    backgroundColor: colors.surfaceHighlight,
+  },
+  cardHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: spacing.xs,
+  },
+  cardTitle: {
+    fontFamily: fontFamily.mono,
+    fontSize: fontSize.xs,
+    color: colors.accent,
+  },
+  pumpDays: {
+    fontFamily: fontFamily.mono,
+    fontSize: fontSize.xs,
+    color: colors.textDim,
+  },
+  pumpStockName: {
+    fontFamily: fontFamily.mono,
+    fontSize: fontSize.xl,
+    color: colors.text,
+    marginBottom: spacing.sm,
+  },
+  pumpStats: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  pumpStat: {
+    fontFamily: fontFamily.mono,
+    fontSize: fontSize.sm,
+    color: colors.textDim,
+  },
+  emptyCard: {
+    borderStyle: 'dashed',
+    alignItems: 'center',
+    paddingVertical: spacing.lg,
+    opacity: 0.7,
+  },
+  emptyText: {
+    fontFamily: fontFamily.mono,
+    fontSize: fontSize.md,
+    color: colors.textDim,
+    marginBottom: spacing.xs,
+  },
+  emptySubtext: {
     fontFamily: fontFamily.mono,
     fontSize: fontSize.xs,
     color: colors.textMuted,
   },
-  statusValue: {
-    fontFamily: fontFamily.mono,
-    fontSize: fontSize.md,
-    color: colors.text,
-  },
-  pumpPanel: {
-    borderColor: colors.accent,
-  },
-  pumpStock: {
-    fontFamily: fontFamily.mono,
-    fontSize: fontSize.lg,
-    color: colors.accent,
-  },
-  pumpInfo: {
-    fontFamily: fontFamily.mono,
-    fontSize: fontSize.sm,
-    color: colors.text,
-    marginTop: spacing.xs,
-  },
-  warningPanel: {
+  warningCard: {
     borderColor: colors.warning,
-    backgroundColor: 'rgba(255, 255, 0, 0.1)',
+    backgroundColor: 'rgba(255, 221, 0, 0.1)',
+    alignItems: 'center',
   },
-  tipPanel: {
-    borderColor: colors.primary,
-    backgroundColor: 'rgba(0, 255, 65, 0.05)',
-  },
-  tipTitle: {
-    fontFamily: fontFamily.mono,
-    fontSize: fontSize.xs,
-    color: colors.primary,
-    marginBottom: spacing.xs,
-  },
-  tipText: {
-    fontFamily: fontFamily.mono,
-    fontSize: fontSize.sm,
-    color: colors.text,
-    lineHeight: 20,
-  },
-  warningText: {
+  warningTitle: {
     fontFamily: fontFamily.mono,
     fontSize: fontSize.sm,
     color: colors.warning,
-    textAlign: 'center',
-  },
-  navGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: spacing.md,
-    gap: spacing.sm,
-  },
-  navButton: {
-    width: '48%',
-    marginBottom: spacing.sm,
-  },
-  progressBar: {
-    height: 12,
-    backgroundColor: colors.backgroundLight,
-    borderWidth: 1,
-    borderColor: colors.borderDim,
     marginBottom: spacing.xs,
   },
-  progressFill: {
-    height: '100%',
-    backgroundColor: colors.money,
-  },
-  progressText: {
+  warningAmount: {
     fontFamily: fontFamily.mono,
-    fontSize: fontSize.sm,
+    fontSize: fontSize.lg,
+    color: colors.warning,
+    fontWeight: 'bold',
+  },
+  statusGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: spacing.sm,
+  },
+  statusCard: {
+    ...commonStyles.box,
+    flex: 1,
+    minWidth: '45%',
+    alignItems: 'center',
+    paddingVertical: spacing.md,
+  },
+  statusLabel: {
+    fontFamily: fontFamily.mono,
+    fontSize: fontSize.xs,
     color: colors.textDim,
-    textAlign: 'center',
+    marginBottom: spacing.xs,
+  },
+  statusValue: {
+    fontFamily: fontFamily.mono,
+    fontSize: fontSize.lg,
+    color: colors.text,
+  },
+  commandDeck: {
+    marginTop: spacing.md,
+  },
+  commandGrid: {
+    gap: spacing.md,
+  },
+  commandButton: {
+    width: '100%',
   },
   footer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
     padding: spacing.md,
+    backgroundColor: colors.background,
     borderTopWidth: 1,
     borderTopColor: colors.border,
-    backgroundColor: colors.surface,
   },
   nextDayButton: {
     width: '100%',
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+    backgroundColor: 'rgba(0, 0, 0, 0.9)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: spacing.lg,
@@ -333,22 +340,31 @@ const styles = StyleSheet.create({
   modalContent: {
     width: '100%',
     maxWidth: 400,
-    borderWidth: 2,
-    borderColor: colors.accent,
-    backgroundColor: colors.surface,
-    padding: spacing.lg,
+    ...commonStyles.box,
+    borderColor: colors.primary,
+    padding: 0,
+    overflow: 'hidden',
+  },
+  modalHeader: {
+    backgroundColor: colors.primaryDim,
+    padding: spacing.sm,
+    alignItems: 'center',
+    marginBottom: spacing.md,
   },
   eventType: {
     fontFamily: fontFamily.mono,
-    fontSize: fontSize.xs,
-    color: colors.textDim,
-    marginBottom: spacing.xs,
+    fontSize: fontSize.sm,
+    color: '#fff',
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
   },
   eventTitle: {
     fontFamily: fontFamily.mono,
     fontSize: fontSize.xl,
-    color: colors.accent,
+    color: colors.primary,
     marginBottom: spacing.md,
+    textAlign: 'center',
+    paddingHorizontal: spacing.md,
   },
   eventDescription: {
     fontFamily: fontFamily.mono,
@@ -356,23 +372,23 @@ const styles = StyleSheet.create({
     color: colors.text,
     lineHeight: 24,
     marginBottom: spacing.lg,
+    textAlign: 'center',
+    paddingHorizontal: spacing.md,
   },
   choicesContainer: {
     gap: spacing.sm,
+    padding: spacing.md,
   },
   choiceButton: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    backgroundColor: colors.backgroundLight,
-    padding: spacing.md,
+    ...commonStyles.interactiveBox,
+    alignItems: 'center',
   },
   choiceText: {
     fontFamily: fontFamily.mono,
-    fontSize: fontSize.sm,
+    fontSize: fontSize.md,
     color: colors.text,
-    textAlign: 'center',
   },
   okButton: {
-    alignSelf: 'center',
+    margin: spacing.md,
   },
 });

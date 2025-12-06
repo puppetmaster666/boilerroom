@@ -3,6 +3,7 @@ export type RootStackParamList = {
   Main: undefined;
   Trade: undefined;
   Boiler: undefined;
+  Marks: undefined;
   Protection: undefined;
   GameOver: undefined;
 };

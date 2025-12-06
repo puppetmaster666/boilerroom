@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { colors, fontSize, fontFamily, spacing, formatMoney, formatPercent, formatPrice } from '../theme/terminal';
+import { colors, fontSize, fontFamily, spacing, formatMoney, formatPercent, formatPrice, commonStyles } from '../theme/terminal';
 import { useGameStore } from '../store/gameStore';
 import { Header } from '../components/Header';
 import { Button } from '../components/Button';
@@ -208,17 +208,21 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
   },
   stockRow: {
+    ...commonStyles.interactiveBox,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.surface,
+    marginBottom: spacing.xs,
+    backgroundColor: colors.surface, // Override interactive highlight unless selected
     borderWidth: 1,
     borderColor: colors.borderDim,
-    padding: spacing.sm,
-    marginBottom: spacing.xs,
   },
   stockRowSelected: {
+    backgroundColor: colors.surfaceHighlight,
     borderColor: colors.accent,
-    backgroundColor: 'rgba(255, 176, 0, 0.1)',
+    transform: [{ scale: 1.02 }], // Subtle pop
+    shadowColor: colors.accent,
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   stockInfo: {
     flex: 1,
@@ -227,6 +231,7 @@ const styles = StyleSheet.create({
     fontFamily: fontFamily.mono,
     fontSize: fontSize.md,
     color: colors.text,
+    fontWeight: 'bold',
   },
   stockName: {
     fontFamily: fontFamily.mono,
@@ -260,10 +265,8 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   tradePanel: {
-    borderWidth: 1,
+    ...commonStyles.box,
     borderColor: colors.accent,
-    backgroundColor: colors.surface,
-    padding: spacing.md,
     marginBottom: spacing.md,
   },
   tradePanelTitle: {
@@ -271,6 +274,9 @@ const styles = StyleSheet.create({
     fontSize: fontSize.lg,
     color: colors.accent,
     marginBottom: spacing.md,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.borderDim,
+    paddingBottom: spacing.xs,
   },
   tradeInfo: {
     marginBottom: spacing.md,
@@ -285,6 +291,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: spacing.sm,
+    backgroundColor: colors.background,
+    padding: spacing.sm,
+    borderRadius: 4,
   },
   quantityLabel: {
     fontFamily: fontFamily.mono,
@@ -299,12 +308,15 @@ const styles = StyleSheet.create({
     marginHorizontal: spacing.md,
     minWidth: 60,
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   totalText: {
     fontFamily: fontFamily.mono,
-    fontSize: fontSize.md,
+    fontSize: fontSize.lg,
     color: colors.money,
     marginBottom: spacing.md,
+    textAlign: 'right',
+    fontWeight: 'bold',
   },
   tradeButtons: {
     flexDirection: 'row',
@@ -317,6 +329,6 @@ const styles = StyleSheet.create({
     padding: spacing.md,
     borderTopWidth: 1,
     borderTopColor: colors.border,
-    backgroundColor: colors.surface,
+    backgroundColor: colors.background,
   },
 });

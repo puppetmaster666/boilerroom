@@ -186,7 +186,15 @@ export const BoilerScreen: React.FC<Props> = ({ navigation }) => {
 
         {/* Marks Overview */}
         <View style={styles.panel}>
-          <Text style={styles.panelTitle}>// MARKS ({marks.length})</Text>
+          <View style={styles.panelHeader}>
+            <Text style={styles.panelTitle}>// MARKS ({marks.length})</Text>
+            <Button
+              title="[ MANAGE ]"
+              onPress={() => navigation.navigate('Marks')}
+              variant="primary"
+              size="small"
+            />
+          </View>
           <View style={styles.markStats}>
             <View style={styles.markStat}>
               <Text style={styles.markStatValue}>{marks.filter(m => m.trust === 1).length}</Text>
@@ -210,7 +218,7 @@ export const BoilerScreen: React.FC<Props> = ({ navigation }) => {
             </View>
           </View>
           <Text style={styles.markTip}>
-            Tip: Sell blue chips to new marks to build trust!
+            Tap MANAGE to sell stocks to marks and build trust!
           </Text>
         </View>
 

@@ -13,7 +13,12 @@
       "Bash(findstr:*)",
       "Bash(cmd //c \"taskkill /F /PID 24704\")",
       "Bash(git init:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd complete Boiler Room game implementation\n\n- Core game screens: NewGame, Main, Trade, Boiler, Protection, GameOver\n- Zustand state management with save/load via AsyncStorage\n- Stock market with penny stocks and blue chips\n- Marks system with trust levels (1-5) for pump-and-dump mechanics\n- Caller management with 4 tiers and personalities\n- Heat system with investigations and protection options\n- Random events system for gameplay variety\n- Retro terminal UI theme with VT323 font\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(gh auth:*)",
+      "Bash(git push:*)",
+      "Bash(git remote:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd marks management screen and sellToMark functionality\n\n- Create MarksScreen for viewing and selling stocks to marks\n- Add sellToMark function to gameStore with trust-based restrictions\n- Trust 1-2 marks can only buy blue chips\n- Trust 3+ marks can buy penny stocks (for pump operations)\n- Player earns 10% commission on all sales to marks\n- Add [MANAGE] button in BoilerScreen to navigate to marks\n- Update navigation types and App.tsx for new screen\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []

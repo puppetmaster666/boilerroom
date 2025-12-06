@@ -48,9 +48,16 @@ export const Button: React.FC<ButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
+    borderRadius: 6,
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    // Tactile feel
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    elevation: 3,
   },
 
   // Variants
@@ -59,8 +66,8 @@ const styles = StyleSheet.create({
     borderColor: colors.primary,
   },
   secondary: {
-    backgroundColor: 'transparent',
-    borderColor: colors.primary,
+    backgroundColor: colors.surfaceHighlight,
+    borderColor: colors.borderActive,
   },
   danger: {
     backgroundColor: colors.dangerDim,
@@ -69,30 +76,40 @@ const styles = StyleSheet.create({
   ghost: {
     backgroundColor: 'transparent',
     borderColor: 'transparent',
+    elevation: 0,
   },
 
   // Sizes
   small: {
     paddingVertical: spacing.xs,
     paddingHorizontal: spacing.sm,
+    minWidth: 80,
   },
   medium: {
     paddingVertical: spacing.sm,
     paddingHorizontal: spacing.md,
+    minWidth: 120,
   },
   large: {
     paddingVertical: spacing.md,
     paddingHorizontal: spacing.lg,
+    minWidth: 160,
   },
 
   // Text base
   text: {
     fontFamily: fontFamily.mono,
+    fontWeight: 'bold',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
 
   // Text variants
   primaryText: {
     color: '#ffffff',
+    textShadowColor: 'rgba(0,0,0,0.5)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 1,
   } as TextStyle,
   secondaryText: {
     color: colors.primary,
@@ -101,7 +118,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   } as TextStyle,
   ghostText: {
-    color: colors.primary,
+    color: colors.textDim,
   } as TextStyle,
 
   // Text sizes
@@ -117,8 +134,10 @@ const styles = StyleSheet.create({
 
   // Disabled
   disabled: {
-    opacity: 0.4,
-    borderColor: colors.textMuted,
+    opacity: 0.5,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
+    elevation: 0,
   },
   disabledText: {
     color: colors.textMuted,

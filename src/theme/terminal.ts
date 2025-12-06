@@ -1,40 +1,45 @@
-// Terminal theme - 1980s CRT aesthetic
+// Terminal theme - Refined Retro (Premium 1987)
 
 export const colors = {
-  // Backgrounds
-  background: '#0a0a0a',
+  // Backgrounds - Softer, deep greys instead of pitch black
+  background: '#111111',
   backgroundLight: '#1a1a1a',
-  surface: '#141414',
+  surface: '#222222',
+  surfaceHighlight: '#2a2a2a',
 
-  // Primary colors
-  primary: '#00ff41', // Matrix green
-  primaryDim: '#00aa2a',
+  // Primary colors - Softer Phosphor Green
+  primary: '#33ff77', 
+  primaryDim: '#1a803b',
+  primaryDark: '#0d401d',
 
-  // Accent colors
-  accent: '#ffb000', // Amber/gold
+  // Accent colors - Amber/Gold for wealth
+  accent: '#ffb000', 
   accentDim: '#996a00',
+  accentDark: '#4d3500',
 
   // Danger/heat
-  danger: '#ff3333',
-  dangerDim: '#aa2222',
+  danger: '#ff4444',
+  dangerDim: '#802222',
 
   // Warning
-  warning: '#ffff00',
-  warningDim: '#999900',
+  warning: '#ffdd00',
+  warningDim: '#806e00',
 
-  // Text
-  text: '#00ff41',
-  textDim: '#006618',
-  textMuted: '#444444',
+  // Text - High readability
+  text: '#e0e0e0', // Off-white for main text
+  textDim: '#a0a0a0',
+  textMuted: '#666666',
+  textInverse: '#111111',
 
   // Borders
-  border: '#00ff41',
-  borderDim: '#004411',
+  border: '#333333',
+  borderActive: '#33ff77',
+  borderDim: '#222222',
 
   // Special
-  money: '#00ff41',
-  heat: '#ff3333',
-  trust: '#00aaff',
+  money: '#33ff77',
+  heat: '#ff4444',
+  trust: '#00ccff',
 };
 
 export const spacing = {
@@ -43,42 +48,61 @@ export const spacing = {
   md: 16,
   lg: 24,
   xl: 32,
+  xxl: 48,
 };
 
 export const fontSize = {
-  xs: 10,
-  sm: 12,
-  md: 14,
-  lg: 18,
+  xs: 12,
+  sm: 14,
+  md: 16,
+  lg: 20,
   xl: 24,
   xxl: 32,
-  title: 48,
+  title: 40,
 };
 
 export const fontFamily = {
-  // Using the exact font name that's registered
-  mono: 'VT323_400Regular',
+  // Keeping the pixel font for flavor, but we might want to mix in a clean sans for body if needed.
+  // For now, we stick to the requested retro feel but rely on size/color for readability.
+  mono: 'VT323_400Regular', 
 };
 
 // Common styles
 export const commonStyles = {
-  // Terminal box
+  // Premium Card
   box: {
+    backgroundColor: colors.surface,
+    borderRadius: 8,
     borderWidth: 1,
     borderColor: colors.border,
-    backgroundColor: colors.surface,
+    padding: spacing.md,
+    // Shadow for depth
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 4,
+  },
+
+  // Interactive Card (Button-like)
+  interactiveBox: {
+    backgroundColor: colors.surfaceHighlight,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: colors.borderActive,
     padding: spacing.md,
   },
 
-  // Scanline effect (applied as overlay)
+  // No scanlines - cleaner look
   scanlines: {
-    position: 'absolute' as const,
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    opacity: 0.03,
-    pointerEvents: 'none' as const,
+    display: 'none' as const,
+  },
+  
+  // Text Shadows for "Glow" effect (use sparingly)
+  glow: {
+    textShadowColor: 'rgba(51, 255, 119, 0.5)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
 };
 

@@ -14,6 +14,7 @@ import { NewGameScreen } from './src/screens/NewGameScreen';
 import { MainScreen } from './src/screens/MainScreen';
 import { TradeScreen } from './src/screens/TradeScreen';
 import { BoilerScreen } from './src/screens/BoilerScreen';
+import { MarksScreen } from './src/screens/MarksScreen';
 import { ProtectionScreen } from './src/screens/ProtectionScreen';
 import { GameOverScreen } from './src/screens/GameOverScreen';
 
@@ -61,6 +62,7 @@ const AppNavigator: React.FC = () => {
       <Stack.Screen name="Main" component={MainScreen} />
       <Stack.Screen name="Trade" component={TradeScreen} />
       <Stack.Screen name="Boiler" component={BoilerScreen} />
+      <Stack.Screen name="Marks" component={MarksScreen} />
       <Stack.Screen name="Protection" component={ProtectionScreen} />
       <Stack.Screen name="GameOver" component={GameOverScreen} />
     </Stack.Navigator>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { colors, fontSize, fontFamily, formatMoney, getHeatColor } from '../theme/terminal';
+import { colors, fontSize, fontFamily, formatMoney, getHeatColor, spacing, commonStyles } from '../theme/terminal';
 import { useGameStore } from '../store/gameStore';
 
 export const Header: React.FC = () => {
@@ -9,56 +9,48 @@ export const Header: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* Top Row: Firm Name and Day */}
-      <View style={styles.topRow}>
+      {/* Top Bar: Firm Name & Day */}
+      <View style={styles.topBar}>
         <Text style={styles.firmName}>{firmName}</Text>
-        <Text style={styles.day}>DAY {day}</Text>
+        <View style={styles.dayBadge}>
+          <Text style={styles.dayText}>DAY {day}</Text>
+        </View>
       </View>
 
-      {/* Main Stats Row */}
-      <View style={styles.mainStats}>
-        {/* Cash */}
-        <View style={styles.mainStat}>
-          <Text style={styles.mainLabel}>CASH</Text>
-          <Text style={styles.mainValue}>{formatMoney(cash)}</Text>
+      {/* HUD Grid */}
+      <View style={styles.hudGrid}>
+
+        {/* Cash Module */}
+        <View style={[styles.hudModule, styles.cashModule]}>
+          <Text style={styles.label}>LIQUID CASH</Text>
+          <Text style={styles.cashValue}>{formatMoney(cash)}</Text>
         </View>
 
-        {/* Net Worth - Most prominent */}
-        <View style={[styles.mainStat, styles.netWorthStat]}>
-          <Text style={styles.mainLabel}>NET WORTH</Text>
-          <Text style={[styles.mainValue, styles.netWorthValue]}>{formatMoney(netWorth)}</Text>
+        {/* Net Worth Module */}
+        <View style={[styles.hudModule, styles.netWorthModule]}>
+          <Text style={styles.label}>NET WORTH</Text>
+          <Text style={styles.netWorthValue}>{formatMoney(netWorth)}</Text>
           {netWorth >= 10000000 && (
-            <Text style={styles.goalReached}>★ GOAL REACHED ★</Text>
+            <Text style={styles.goalText}>GOAL REACHED</Text>
           )}
         </View>
-      </View>
 
-      {/* Heat Bar - Full Width */}
-      <View style={styles.heatSection}>
-        <View style={styles.heatHeader}>
-          <Text style={styles.heatLabel}>HEAT</Text>
-          <Text style={[styles.heatPercent, { color: getHeatColor(heat) }]}>
-            {heat}%
-          </Text>
+        {/* Heat Module */}
+        <View style={[styles.hudModule, styles.heatModule]}>
+          <View style={styles.heatHeader}>
+            <Text style={styles.label}>HEAT LEVEL</Text>
+            <Text style={[styles.heatValue, { color: getHeatColor(heat) }]}>{heat}%</Text>
+          </View>
+          <View style={styles.heatBarBg}>
+            <View
+              style={[
+                styles.heatBarFill,
+                { width: `${heat}%`, backgroundColor: getHeatColor(heat) }
+              ]}
+            />
+          </View>
         </View>
-        <View style={styles.heatBarBg}>
-          <View
-            style={[
-              styles.heatBarFill,
-              {
-                width: `${heat}%`,
-                backgroundColor: getHeatColor(heat),
-              },
-            ]}
-          />
-          {/* Threshold markers */}
-          <View style={[styles.threshold, { left: '25%' }]} />
-          <View style={[styles.threshold, { left: '50%' }]} />
-          <View style={[styles.threshold, { left: '75%' }]} />
-        </View>
-        {heat >= 75 && (
-          <Text style={styles.heatWarning}>! DANGER ZONE !</Text>
-        )}
+
       </View>
     </View>
   );
@@ -66,61 +58,85 @@ export const Header: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.surface,
-    borderBottomWidth: 2,
+    backgroundColor: colors.background,
+    paddingHorizontal: spacing.md,
+    paddingTop: spacing.lg, // Status bar spacing
+    paddingBottom: spacing.md,
+    borderBottomWidth: 1,
     borderBottomColor: colors.border,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
   },
-  topRow: {
+  topBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: spacing.md,
   },
   firmName: {
     fontFamily: fontFamily.mono,
     fontSize: fontSize.lg,
+    color: colors.text,
+    letterSpacing: 1,
+  },
+  dayBadge: {
+    backgroundColor: colors.surfaceHighlight,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 2,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  dayText: {
+    fontFamily: fontFamily.mono,
+    fontSize: fontSize.md,
     color: colors.accent,
   },
-  day: {
-    fontFamily: fontFamily.mono,
-    fontSize: fontSize.lg,
-    color: colors.text,
-  },
-  mainStats: {
+  hudGrid: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 12,
+    gap: spacing.sm,
   },
-  mainStat: {
+  hudModule: {
+    ...commonStyles.box,
     flex: 1,
+    padding: spacing.sm,
+    justifyContent: 'center',
   },
-  netWorthStat: {
-    alignItems: 'flex-end',
+  cashModule: {
+    flex: 1.2,
+    borderColor: colors.primaryDim,
   },
-  mainLabel: {
+  netWorthModule: {
+    flex: 1.2,
+    borderColor: colors.accentDim,
+  },
+  heatModule: {
+    flex: 1,
+    borderColor: colors.dangerDim,
+  },
+  label: {
     fontFamily: fontFamily.mono,
-    fontSize: fontSize.xs,
+    fontSize: 10,
     color: colors.textDim,
     marginBottom: 2,
+    textTransform: 'uppercase',
   },
-  mainValue: {
+  cashValue: {
     fontFamily: fontFamily.mono,
-    fontSize: fontSize.xxl,
+    fontSize: fontSize.lg,
     color: colors.money,
+    fontWeight: 'bold',
   },
   netWorthValue: {
-    color: colors.accent,
-  },
-  goalReached: {
     fontFamily: fontFamily.mono,
-    fontSize: fontSize.xs,
-    color: colors.warning,
-    marginTop: 2,
+    fontSize: fontSize.lg,
+    color: colors.accent,
+    fontWeight: 'bold',
   },
-  heatSection: {
-    marginTop: 4,
+  goalText: {
+    fontSize: 8,
+    color: colors.warning,
+    position: 'absolute',
+    top: 2,
+    right: 4,
   },
   heatHeader: {
     flexDirection: 'row',
@@ -128,38 +144,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 4,
   },
-  heatLabel: {
+  heatValue: {
     fontFamily: fontFamily.mono,
-    fontSize: fontSize.sm,
-    color: colors.textDim,
-  },
-  heatPercent: {
-    fontFamily: fontFamily.mono,
-    fontSize: fontSize.lg,
+    fontSize: fontSize.md,
     fontWeight: 'bold',
   },
   heatBarBg: {
-    height: 12,
-    backgroundColor: colors.backgroundLight,
-    borderWidth: 1,
-    borderColor: colors.borderDim,
-    position: 'relative',
+    height: 6,
+    backgroundColor: colors.background,
+    borderRadius: 3,
+    overflow: 'hidden',
   },
   heatBarFill: {
     height: '100%',
-  },
-  threshold: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    width: 1,
-    backgroundColor: colors.textMuted,
-  },
-  heatWarning: {
-    fontFamily: fontFamily.mono,
-    fontSize: fontSize.xs,
-    color: colors.danger,
-    textAlign: 'center',
-    marginTop: 4,
+    borderRadius: 3,
   },
 });

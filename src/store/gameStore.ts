@@ -103,6 +103,7 @@ interface GameStore extends GameState {
   // Marks
   acquireMark: () => void;
   processMarks: () => void;
+  sellToMark: (markId: string, stockKey: string, shares: number) => boolean;
 
   // Pumping
   startPump: (stockKey: string) => boolean;
@@ -426,6 +427,41 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       return { marks: updatedMarks };
     });
+  },
+
+  sellToMark: (markId: string, stockKey: string, shares: number) => {
+    const state = get();
+    const mark = state.marks.find(m => m.id === markId);
+    const stock = state.stocks[stockKey];
+
+    if (!mark || !stock || shares <= 0) return false;
+
+    // Check if mark can buy this stock based on trust
+    const isPennyStock = !stock.isBlueChip;
+    if (isPennyStock && mark.trust < 3) return false;
+
+    const cost = shares * stock.price;
+
+    // Update mark's holdings
+    set(s => ({
+      marks: s.marks.map(m => {
+        if (m.id !== markId) return m;
+
+        const existingShares = m.holdings[stockKey] || 0;
+        return {
+          ...m,
+          holdings: {
+            ...m.holdings,
+            [stockKey]: existingShares + shares,
+          },
+          invested: m.invested + cost,
+        };
+      }),
+      // You get a commission (10% of sale)
+      cash: s.cash + Math.floor(cost * 0.1),
+    }));
+
+    return true;
   },
 
   // Pumping
