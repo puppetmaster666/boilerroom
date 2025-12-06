@@ -18,7 +18,8 @@
       "Bash(gh auth:*)",
       "Bash(git push:*)",
       "Bash(git remote:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nAdd marks management screen and sellToMark functionality\n\n- Create MarksScreen for viewing and selling stocks to marks\n- Add sellToMark function to gameStore with trust-based restrictions\n- Trust 1-2 marks can only buy blue chips\n- Trust 3+ marks can buy penny stocks (for pump operations)\n- Player earns 10% commission on all sales to marks\n- Add [MANAGE] button in BoilerScreen to navigate to marks\n- Update navigation types and App.tsx for new screen\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd marks management screen and sellToMark functionality\n\n- Create MarksScreen for viewing and selling stocks to marks\n- Add sellToMark function to gameStore with trust-based restrictions\n- Trust 1-2 marks can only buy blue chips\n- Trust 3+ marks can buy penny stocks (for pump operations)\n- Player earns 10% commission on all sales to marks\n- Add [MANAGE] button in BoilerScreen to navigate to marks\n- Update navigation types and App.tsx for new screen\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []

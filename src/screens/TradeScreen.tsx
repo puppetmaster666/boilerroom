@@ -5,6 +5,7 @@ import { colors, fontSize, fontFamily, spacing, formatMoney, formatPercent, form
 import { useGameStore } from '../store/gameStore';
 import { Header } from '../components/Header';
 import { Button } from '../components/Button';
+import { StockTicker } from '../components/StockTicker';
 import { RootStackParamList } from '../navigation/types';
 import { StockState } from '../types';
 
@@ -75,6 +76,7 @@ export const TradeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header />
+      <StockTicker />
 
       <ScrollView style={styles.content}>
         {/* Penny Stocks */}

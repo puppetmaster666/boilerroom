@@ -154,20 +154,20 @@ export const MarksScreen: React.FC<Props> = ({ navigation }) => {
       <ScrollView style={styles.content}>
         {/* Instructions */}
         <View style={styles.infoBox}>
-          <Text style={styles.infoTitle}>HOW TO BUILD TRUST</Text>
+          <Text style={styles.infoTitle}>// HOW TO BUILD TRUST</Text>
           <Text style={styles.infoText}>
-            1. Sell BLUE CHIPS to new marks (trust 1-2){'\n'}
-            2. When their stocks go UP, trust increases{'\n'}
-            3. Trust 3+ marks will buy PENNY STOCKS{'\n'}
-            4. Start a PUMP and they'll drive up the price{'\n'}
-            5. DUMP before the crash - they lose, you win
+            {'>'} Sell BLUE CHIPS to new marks (trust 1-2){'\n'}
+            {'>'} When their stocks go UP, trust increases{'\n'}
+            {'>'} Trust 3+ marks will buy PENNY STOCKS{'\n'}
+            {'>'} Start a PUMP and they'll drive up the price{'\n'}
+            {'>'} DUMP before the crash - they lose, you win
           </Text>
         </View>
 
         {/* Marks List */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
-            YOUR MARKS ({marks.length})
+            // YOUR MARKS ({marks.length})
           </Text>
 
           {marks.length === 0 ? (

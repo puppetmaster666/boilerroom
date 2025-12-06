@@ -106,21 +106,27 @@ export const GameOverScreen: React.FC<Props> = ({ navigation }) => {
       {won ? (
         <View style={styles.asciiContainer}>
           <Text style={styles.asciiWin}>{`
-   $$$$$$$$$$$$$$$$$$
-   $                $
-   $   YOU MADE IT  $
-   $                $
-   $$$$$$$$$$$$$$$$$$
+  ╔══════════════════════════════════╗
+  ║  $$$$$   ESCAPED   $$$$$         ║
+  ║  ▲▲▲▲▲   TO THE    ▲▲▲▲▲         ║
+  ║  $$$$$   BAHAMAS   $$$$$         ║
+  ╠══════════════════════════════════╣
+  ║    Congratulations, you beat     ║
+  ║    the system and got away.      ║
+  ╚══════════════════════════════════╝
           `}</Text>
         </View>
       ) : (
         <View style={styles.asciiContainer}>
           <Text style={styles.asciiLose}>{`
-   ╔═══════════════╗
-   ║   FEDERAL     ║
-   ║   PRISON      ║
-   ║   ▓▓▓▓▓▓▓▓▓   ║
-   ╚═══════════════╝
+  ╔══════════════════════════════════╗
+  ║       FEDERAL BUREAU OF          ║
+  ║          INVESTIGATION           ║
+  ╠══════════════════════════════════╣
+  ║    CASE STATUS: CLOSED           ║
+  ║    SUBJECT: INCARCERATED         ║
+  ║    ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓         ║
+  ╚══════════════════════════════════╝
           `}</Text>
         </View>
       )}

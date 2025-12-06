@@ -5,6 +5,7 @@ import { colors, fontSize, fontFamily, spacing, formatMoney, commonStyles } from
 import { useGameStore } from '../store/gameStore';
 import { Header } from '../components/Header';
 import { Button } from '../components/Button';
+import { StockTicker } from '../components/StockTicker';
 import { RootStackParamList } from '../navigation/types';
 import { EVENT_TEMPLATES } from '../data/events';
 
@@ -43,12 +44,13 @@ export const MainScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Header />
+      <StockTicker />
 
       <ScrollView style={styles.content} contentContainerStyle={styles.scrollContent}>
 
         {/* Active Operations Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>ACTIVE OPERATIONS</Text>
+          <Text style={styles.sectionTitle}>// ACTIVE OPERATIONS</Text>
 
           {/* Active Pump Card */}
           {activePump && pumpStock ? (
@@ -81,7 +83,7 @@ export const MainScreen: React.FC<Props> = ({ navigation }) => {
 
         {/* Office Status Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>OFFICE STATUS</Text>
+          <Text style={styles.sectionTitle}>// OFFICE STATUS</Text>
           <View style={styles.statusGrid}>
             <View style={styles.statusCard}>
               <Text style={styles.statusLabel}>OFFICE</Text>
@@ -104,26 +106,26 @@ export const MainScreen: React.FC<Props> = ({ navigation }) => {
 
         {/* Command Deck */}
         <View style={styles.commandDeck}>
-          <Text style={styles.sectionTitle}>COMMAND DECK</Text>
+          <Text style={styles.sectionTitle}>// COMMAND DECK</Text>
           <View style={styles.commandGrid}>
             <Button
-              title="TRADE"
+              title=">>> TRADE STOCKS"
               onPress={() => navigation.navigate('Trade')}
               variant="primary"
               size="large"
               style={styles.commandButton}
             />
             <Button
-              title="BOILER ROOM"
+              title=">>> BOILER ROOM"
               onPress={() => navigation.navigate('Boiler')}
-              variant="primary"
+              variant="secondary"
               size="large"
               style={styles.commandButton}
             />
             <Button
-              title="PROTECTION"
+              title=">>> PROTECTION"
               onPress={() => navigation.navigate('Protection')}
-              variant="danger" // Distinct color for protection
+              variant="danger"
               size="large"
               style={styles.commandButton}
             />
